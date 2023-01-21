@@ -5,6 +5,7 @@ PORT   = /dev/ttyUSB0
 SKETCH = firmware
 
 init:
+	$(CC) core update-index --config-file $(CONF)
 	$(CC) core install esp8266:esp8266 --config-file $(CONF)
 
 compile:
