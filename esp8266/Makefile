@@ -1,18 +1,21 @@
-CC     = arduino-cli
+CMD    = arduino-cli --config-file ./.arduino-cli.yaml
 FQBN   = esp8266:esp8266:nodemcu
-CONF   = ./.arduino-cli.yaml
 PORT   = /dev/ttyUSB0
 SKETCH = firmware
 
 init:
-	$(CC) core update-index --config-file $(CONF)
-	$(CC) core install esp8266:esp8266 --config-file $(CONF)
+	$(CMD) core update-index
+	$(CMD) core install esp8266:esp8266
+	$(CMD) lib install "Easy MFRC522"
 
 compile:
-	$(CC) compile --fqbn $(FQBN) $(SKETCH) --config-file $(CONF)
+	$(CMD) compile --fqbn $(FQBN) $(SKETCH)
 
 upload:
-	$(CC) upload -p $(PORT) --fqbn $(FQBN) $(SKETCH) --config-file $(CONF)
+	$(CMD) upload -p $(PORT) --fqbn $(FQBN) $(SKETCH)
+
+monitor:
+	$(CMD) monitor -p $(PORT) --fqbn $(FQBN)
 
 run: compile upload
 
