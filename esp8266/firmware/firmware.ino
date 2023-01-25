@@ -1,5 +1,8 @@
 #include "config.ipp"
 
+// function to write formatted text as serial output
+void printfs(const char *fmt, ...);
+
 void setup() {
     // TODO: init serial comm properly
     Serial.begin(9600);
@@ -13,19 +16,23 @@ void loop() {
     uint8_t reader; uint32_t uid;
     if (!rfid_read_card(&uid, &reader)) return;
 
-    Serial.print(reader); Serial.print(":uid:"); Serial.println(uid);
+    if (!wifi_check_connectivity()) {
+        printfs("not connected to wifi\n");
+        wifi_connect_loop();
+        return;
+    }
 
-    // if (WiFi.status() == WL_CONNECTED) {
-    //     char request_body[20];
-    //     WiFiClient client;
-    //     HTTPClient http;
+    printfs("access: %d\n", wifi_request_access(uid, reader));
+}
 
-    //     http.begin(client, i == 0 ? LOGIN_REMOTE_ADDR : EXIT_REMOTE_ADDR);
-    //     http.addHeader("Content-Type", "application/json");
+// function to write formatted text as serial output
+void printfs(const char *fmt, ...) {
+    char buf[256];
+    va_list args;
 
-    //     snprintf(request_body, sizeof(request_body), "{\"uid\": %zu}", uid);
-    //     Serial.print("reader: "); Serial.print(i);
-    //     Serial.print(" request_body: "); Serial.print(request_body);
-    //     int http_code = http.POST(request_body);
-    // }
+    va_start(args, fmt);
+    vsnprintf(buf, sizeof(buf), fmt, args);
+    va_end(args);
+
+    Serial.print(buf);
 }
