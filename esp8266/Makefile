@@ -17,6 +17,6 @@ upload:
 monitor:
 	$(CMD) monitor -p $(PORT) --fqbn $(FQBN)
 
-run: compile upload
+run: compile upload monitor
 
 .PHONY: init compile upload run
