@@ -15,14 +15,15 @@ void setup() {
 void loop() {
     uint8_t reader; uint32_t uid;
     if (!rfid_read_card(&uid, &reader)) return;
+    printfs("[INFO] new card read: %u:%u\n", reader, uid)
 
     if (!wifi_check_connectivity()) {
-        printfs("not connected to wifi\n");
+        printfs("[WARN] not connected to wifi\n");
         wifi_connect_loop();
         return;
     }
 
-    printfs("access: %d\n", wifi_request_access(uid, reader));
+    printfs("[INFO] access: %d\n", wifi_request_access(uid, reader));
 }
 
 // function to write formatted text as serial output

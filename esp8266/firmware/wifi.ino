@@ -7,7 +7,7 @@ void wifi_init() {
 }
 
 void wifi_connect_loop() {
-    printfs("connecting to wifi: %s:%s\n", WIFI_SSID, WIFI_PASS);
+    printfs("[INFO] connecting to wifi: %s", WIFI_SSID, WIFI_PASS);
     WiFi.begin(WIFI_SSID, WIFI_PASS);
 
     while (WiFi.status() != WL_CONNECTED) {
@@ -15,7 +15,7 @@ void wifi_connect_loop() {
         Serial.print(".");
     };
 
-    printfs("connected to wifi");
+    printfs("\n[INFO] connected to wifi: %s\n", WiFi.localIP());
 }
 
 bool wifi_check_connectivity() {
@@ -31,10 +31,10 @@ int wifi_request_access(uint32_t uid, uint8_t reader) {
     http.addHeader("Content-Type", "application/json");
 
     snprintf(request_body, sizeof(request_body), "{\"uid\": %zu}", uid);
-    printfs("%u:%u:request_body:%s\n", reader, uid, request_body);
+    printfs("[INFO] req summary: %u:%u:request_body:%s\n", reader, uid, request_body);
 
     int http_code = http.POST(request_body);
-    printfs("respone http code: %d\n", http_code);
+    printfs("[INFO] respone http code: %d\n", http_code);
 
-    return http_code == 200;
+    return http_code < 0 ? http_code : http_code == 200;
 }
