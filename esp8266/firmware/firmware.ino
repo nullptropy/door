@@ -1,39 +1,26 @@
 #include "config.ipp"
 
-// function to write formatted text as serial output
-void printfs(const char *fmt, ...);
+#define  INFO(fmt, ...) serial_printf("[ INFO] " fmt, ##__VA_ARGS__);
+#define  WARN(fmt, ...) serial_printf("[ WARN] " fmt, ##__VA_ARGS__);
+#define ERROR(fmt, ...) serial_printf("[ERROR] " fmt, ##__VA_ARGS__);
 
 void setup() {
-    // TODO: init serial comm properly
-    Serial.begin(9600);
-    // TODO: init wifi
+    serial_init(9600);
     wifi_init();
-    // TODO: init rfid readers
     rfid_init_readers();
 }
 
 void loop() {
     uint8_t reader; uint32_t uid;
     if (!rfid_read_card(&uid, &reader)) return;
-    printfs("[INFO] new card read: %u:%u\n", reader, uid)
+    INFO("new card read: %u:%u\n", reader, uid)
 
     if (!wifi_check_connectivity()) {
-        printfs("[WARN] not connected to wifi\n");
+        WARN("not connected to wifi\n");
         wifi_connect_loop();
         return;
     }
 
-    printfs("[INFO] access: %d\n", wifi_request_access(uid, reader));
+    INFO("access: %d\n", wifi_request_access(uid, reader));
 }
 
-// function to write formatted text as serial output
-void printfs(const char *fmt, ...) {
-    char buf[256];
-    va_list args;
-
-    va_start(args, fmt);
-    vsnprintf(buf, sizeof(buf), fmt, args);
-    va_end(args);
-
-    Serial.print(buf);
-}
