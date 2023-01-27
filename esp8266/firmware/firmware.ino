@@ -1,4 +1,4 @@
-#include "config.ipp"
+#include "config.h"
 
 #define  INFO(fmt, ...) serial_printf("[ INFO] " fmt, ##__VA_ARGS__);
 #define  WARN(fmt, ...) serial_printf("[ WARN] " fmt, ##__VA_ARGS__);
