@@ -7,7 +7,7 @@ void wifi_init() {
 }
 
 void wifi_connect_loop() {
-    INFO("connecting to wifi: %s", WIFI_SSID, WIFI_PASS);
+    INFO("connecting to wifi: %s", WIFI_SSID);
     WiFi.begin(WIFI_SSID, WIFI_PASS);
 
     while (WiFi.status() != WL_CONNECTED) {
@@ -37,5 +37,6 @@ int wifi_request_access(uint32_t uid, uint8_t reader) {
     int http_code = http.POST(request_body);
     INFO("respone http code: %d\n", http_code);
 
+    // TODO: add response body based checks
     return http_code < 0 ? http_code : http_code == 200;
 }

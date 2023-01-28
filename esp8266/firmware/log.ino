@@ -1,3 +1,6 @@
+// TODO(s):
+//   * SERIAL_TX_ONLY
+//   * ::setDebugOutput(true)
 void serial_init(int baudrate) {
     Serial.begin(baudrate);
 }

@@ -22,5 +22,6 @@ void loop() {
     }
 
     INFO("access: %d\n", wifi_request_access(uid, reader));
+    // TODO: if access == 1: unlock the door
 }
 
