@@ -6,7 +6,7 @@ SKETCH = firmware
 init:
 	$(CMD) core update-index
 	$(CMD) core install esp8266:esp8266
-	$(CMD) lib install "Easy MFRC522"
+	$(CMD) lib install "MFRC522"
 
 compile:
 	$(CMD) compile --fqbn $(FQBN) $(SKETCH)
