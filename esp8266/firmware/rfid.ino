@@ -16,6 +16,8 @@ void rfid_init_readers() {
 bool rfid_read_card(uint32_t *uid, uint8_t *reader) {
     for (int i = 0; i < 2; ++i) {
         if (rfids[i].PICC_IsNewCardPresent() && rfids[i].PICC_ReadCardSerial()) {
+            // we only care about cards that have
+            // a uid size of 4
             if (rfids[i].uid.size != 4)
                 continue;
 

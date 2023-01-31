@@ -15,6 +15,8 @@ void loop() {
     if (!rfid_read_card(&uid, &reader)) return;
     INFO("new card read: %u:%u\n", reader, uid)
 
+    // TODO: this might cause some problems with the WiFi
+    // stack's execution, test it properly
     if (!wifi_check_connectivity()) {
         WARN("not connected to wifi\n");
         wifi_connect_loop();
@@ -24,4 +26,3 @@ void loop() {
     INFO("access: %d\n", wifi_request_access(uid, reader));
     // TODO: if access == 1: unlock the door
 }
-
